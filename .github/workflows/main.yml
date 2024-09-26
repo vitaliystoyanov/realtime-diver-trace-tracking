@@ -2,11 +2,8 @@ name: CI Build & Tests & Artifacts
 
 on:
   push:
-    paths-ignore:
-      - '.github/**'
-    branches: [ "main" ]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
   unit-test:
@@ -22,7 +19,7 @@ jobs:
           cache-read-only: false
           
       - name: Setup JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4.0.0
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
@@ -35,7 +32,7 @@ jobs:
         run: ./gradlew test
 
       - name: Upload Unit Test Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: unit-test-report
           path: app/build/reports/unitTests/tests/testDebugUnitTest
@@ -54,7 +51,7 @@ jobs:
           cache-read-only: false
           
       - name: Setup JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4.0.0
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
@@ -64,7 +61,7 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Upload Debug APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/*.apk
@@ -83,7 +80,7 @@ jobs:
           cache-read-only: false
           
       - name: Setup JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4.0.0
         with:
           distribution: 'zulu' # See 'Supported distributions' for available options
           java-version: '17'
@@ -94,13 +91,13 @@ jobs:
           ./gradlew assembleRelease
           ./gradlew bundleRelease
       - name: Assemble Release APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: app-release.apk
           path: app/build/outputs/apk/release/app-release-unsigned.apk
 
       - name: Upload AAB Bundle
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.3.1
         with:
           name: app-release.aab
           path: app/build/outputs/bundle/release/app-release.aab
